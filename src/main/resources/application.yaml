@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: job-service
+  jpa:
+    show-sql: true
+    hibernate:
+        ddl-auto: update
+  datasource:
+    url: ${DATABASE_URL}
+    driverClassName: org.postgres.Driver
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
+server:
+  port: ${PORT}
+eureka:
+  instance:
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true
+  client:
+    healthcheck:
+      enabled: true
+      service-url:
+      defaultZone: ${EUREKA_URL}
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,prometheus,gateway
+
+
