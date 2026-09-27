@@ -4,19 +4,22 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-        ddl-auto: update
+      ddl-auto: update
   datasource:
     url: ${DATABASE_URL}
-    driverClassName: org.postgres.Driver
+    driver-class-name: org.postgresql.Driver
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
+
 springdoc:
   swagger-ui:
     enabled: true
   api-docs:
     enabled: true
+
 server:
   port: ${PORT}
+
 eureka:
   instance:
     status-page-url-path: /actuator/info
@@ -24,13 +27,12 @@ eureka:
     prefer-ip-address: true
   client:
     healthcheck:
-      enabled: true
-      service-url:
+      enabled: false
+    service-url:
       defaultZone: ${EUREKA_URL}
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: health,info,prometheus,gateway
 
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
