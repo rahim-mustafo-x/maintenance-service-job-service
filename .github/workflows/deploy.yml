@@ -68,12 +68,20 @@ jobs:
       # --------------------------------------------------
       - name: Deploy
         env:
+          PORT: 7876
           EUREKA_URL: ${{ secrets.EUREKA_URL }}
           DATABASE_URL: ${{ secrets.JOB_DATABASE_URL }}
           DATABASE_USERNAME: ${{ secrets.JOB_DATABASE_USERNAME }}
           DATABASE_PASSWORD: ${{ secrets.JOB_DATABASE_PASSWORD }}
         run: |
-          ssh "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" << EOF
+          ssh "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "PORT='$PORT' \
+             EUREKA_URL='$EUREKA_URL' \
+             DATABASE_URL='$DATABASE_URL' \
+             DATABASE_USERNAME='$DATABASE_USERNAME' \
+             DATABASE_PASSWORD='$DATABASE_PASSWORD' \
+             bash -s" << 'REMOTE_SCRIPT'
+
             set -e
 
             cd /opt/maintenance-service-job-service
@@ -89,13 +97,13 @@ jobs:
             echo "Creating production .env..."
             echo "========================================"
 
-            cat > .env << ENVEOF
-            PORT=$PORT
-            EUREKA_URL=$EUREKA_URL
-            DATABASE_URL=$DATABASE_URL
-            DATABASE_USERNAME=$DATABASE_USERNAME
-            DATABASE_PASSWORD=$DATABASE_PASSWORD
-            ENVEOF
+            printf '%s\n' \
+              "PORT=$PORT" \
+              "EUREKA_URL=$EUREKA_URL" \
+              "DATABASE_URL=$DATABASE_URL" \
+              "DATABASE_USERNAME=$DATABASE_USERNAME" \
+              "DATABASE_PASSWORD=$DATABASE_PASSWORD" \
+              > .env
 
             chmod 600 .env
 
@@ -104,6 +112,8 @@ jobs:
             echo "========================================"
 
             docker compose config > /dev/null
+
+            echo "Docker Compose configuration OK"
 
             echo "========================================"
             echo "Building Job Service..."
@@ -138,4 +148,5 @@ jobs:
             echo "========================================"
             echo "Deployment complete."
             echo "========================================"
-          EOF
+
+          REMOTE_SCRIPT
