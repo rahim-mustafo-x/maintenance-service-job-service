@@ -25,6 +25,8 @@ eureka:
     status-page-url-path: /actuator/info
     health-check-url-path: /actuator/health
     prefer-ip-address: true
+    ip-address: 192.168.1.200
+    non-secure-port: ${PORT}
   client:
     healthcheck:
       enabled: false
