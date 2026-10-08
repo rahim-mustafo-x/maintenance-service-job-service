@@ -7,9 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class MaintenanceServiceJobServiceApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(MaintenanceServiceJobServiceApplication.class, args);
     }
-
 }
