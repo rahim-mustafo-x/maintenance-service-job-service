@@ -1,6 +1,9 @@
 spring:
   application:
     name: job-service
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
   jpa:
     show-sql: true
     hibernate:
