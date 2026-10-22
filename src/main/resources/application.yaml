@@ -2,17 +2,19 @@ spring:
   application:
     name: job-service
 
-jwt:
-  secret-key: ${JWT_SECRET_KEY}
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
+
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
 
 springdoc:
   swagger-ui:
